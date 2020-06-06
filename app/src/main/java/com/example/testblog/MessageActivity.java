@@ -39,7 +39,6 @@ public class MessageActivity extends AppCompatActivity {
     public void onPostThis (View view) {
 
         if (!String.valueOf(editText.getText()).equals("")) {
-            //NetworkService.posts.add("post ID: 101" +  "\n" +  "\n" +"user ID: 1" +  "\n" +  "\n" + "Title: foo" + "\n" +  "\n" + String.valueOf(editText.getText()));
             Post post = new Post();
             post.setBody(String.valueOf(editText.getText()));
             post.setId(NetworkService.posts.size() + 1);
