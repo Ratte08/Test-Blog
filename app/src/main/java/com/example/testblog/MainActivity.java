@@ -1,11 +1,14 @@
 package com.example.testblog;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import java.util.List;
@@ -21,6 +24,7 @@ import static com.example.testblog.NetworkService.posts;
 public class MainActivity extends AppCompatActivity {
 
     private RecViewAdapter adapter = new RecViewAdapter(posts);
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     private OkHttpClient client = new OkHttpClient.Builder()
             .connectTimeout(60, TimeUnit.SECONDS)
@@ -35,14 +39,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
-    protected void onStart() {
-        super.onStart();
-        adapter.notifyDataSetChanged();
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        if (requestCode == MessageActivity.POST_REQUEST_CODE) {
+            if (resultCode == RESULT_OK) {
+                adapter.notifyDataSetChanged();
+            } else {
+                Log.d(TAG, "Result code: " + resultCode);
+            }
+        }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
     public void onNewPost(View view) {
         Intent intent = new Intent(this, MessageActivity.class);
-        startActivity(intent);
+        startActivityForResult(intent, MessageActivity.POST_REQUEST_CODE);
     }
 
     public void setupRv () {

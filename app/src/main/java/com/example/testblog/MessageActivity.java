@@ -5,6 +5,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -24,13 +25,14 @@ import static com.example.testblog.NetworkService.posts;
 public class MessageActivity extends AppCompatActivity {
 
     private EditText editText;
+    public static final int POST_REQUEST_CODE = 12;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
 
-        editText = (EditText) findViewById(R.id.et_message);
+        editText = findViewById(R.id.et_message);
 
     }
 
@@ -69,7 +71,7 @@ public class MessageActivity extends AppCompatActivity {
                         if (response.isSuccessful()) {
                             Post post = response.body();
                             posts.add("post ID: " + post.getId() +  "\n" +  "\n" +"user ID: " + post.getUserId() +  "\n" +  "\n" + "Title: " + post.getTitle() + "\n" +  "\n" + post.getBody());
-
+                            setResult(Activity.RESULT_OK);
                         } else {
                             posts.add("Error");
                         }
